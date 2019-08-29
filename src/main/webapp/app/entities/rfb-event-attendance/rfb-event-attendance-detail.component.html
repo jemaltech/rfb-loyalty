@@ -1,37 +1,39 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="rfbEventAttendance">
+            <h2><span>Rfb Event Attendance</span> {{rfbEventAttendance.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Attendance Date</span></dt>
+                <dd>
+                    <span>{{rfbEventAttendance.attendanceDate}}</span>
+                </dd>
+                <dt><span>Rfb Event</span></dt>
+                <dd>
+                    <div *ngIf="rfbEventAttendance.rfbEventId">
+                        <a [routerLink]="['/rfb-event', rfbEventAttendance.rfbEventId, 'view']">{{rfbEventAttendance.rfbEventId}}</a>
+                    </div>
+                </dd>
+                <dt><span>Rfb User</span></dt>
+                <dd>
+                    <div *ngIf="rfbEventAttendance.rfbUserId">
+                        <a [routerLink]="['/rfb-user', rfbEventAttendance.rfbUserId, 'view']">{{rfbEventAttendance.rfbUserId}}</a>
+                    </div>
+                </dd>
+            </dl>
 
-<div *ngIf="rfbEventAttendance">
-    <h2><span>Rfb Event Attendance</span> {{rfbEventAttendance.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span>Attendance Date</span></dt>
-        <dd>
-            <span>{{rfbEventAttendance.attendanceDate | date:'mediumDate'}}</span>
-        </dd>
-        <dt><span>Rfb Event</span></dt>
-        <dd>
-            <div *ngIf="rfbEventAttendance.rfbEventId">
-                <a [routerLink]="['/rfb-event', rfbEventAttendance.rfbEventId]">{{rfbEventAttendance.rfbEventId}}</a>
-            </div>
-        </dd>
-        <dt><span>Rfb User</span></dt>
-        <dd>
-            <div *ngIf="rfbEventAttendance.rfbUserId">
-                <a [routerLink]="['/rfb-user', rfbEventAttendance.rfbUserId]">{{rfbEventAttendance.rfbUserId}}</a>
-            </div>
-        </dd>
-    </dl>
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'rfb-event-attendance/'+ rfbEventAttendance.id + '/edit'} }]"
-            replaceUrl="true"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
-    </button>
+            <button type="button"
+                    [routerLink]="['/rfb-event-attendance', rfbEventAttendance.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

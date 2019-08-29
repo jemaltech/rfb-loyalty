@@ -1,82 +1,98 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, CanActivate } from '@angular/router';
-
-import { UserRouteAccessService } from '../../shared';
-import { JhiPaginationUtil } from 'ng-jhipster';
-
+import { HttpResponse } from '@angular/common/http';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
+import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
+import { UserRouteAccessService } from 'app/core';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { RfbEvent } from 'app/shared/model/rfb-event.model';
+import { RfbEventService } from './rfb-event.service';
 import { RfbEventComponent } from './rfb-event.component';
 import { RfbEventDetailComponent } from './rfb-event-detail.component';
-import { RfbEventPopupComponent } from './rfb-event-dialog.component';
+import { RfbEventUpdateComponent } from './rfb-event-update.component';
 import { RfbEventDeletePopupComponent } from './rfb-event-delete-dialog.component';
+import { IRfbEvent } from 'app/shared/model/rfb-event.model';
 
-@Injectable()
-export class RfbEventResolvePagingParams implements Resolve<any> {
+@Injectable({ providedIn: 'root' })
+export class RfbEventResolve implements Resolve<IRfbEvent> {
+  constructor(private service: RfbEventService) {}
 
-    constructor(private paginationUtil: JhiPaginationUtil) {}
-
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
-        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
-        return {
-            page: this.paginationUtil.parsePage(page),
-            predicate: this.paginationUtil.parsePredicate(sort),
-            ascending: this.paginationUtil.parseAscending(sort)
-      };
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRfbEvent> {
+    const id = route.params['id'];
+    if (id) {
+      return this.service.find(id).pipe(
+        filter((response: HttpResponse<RfbEvent>) => response.ok),
+        map((rfbEvent: HttpResponse<RfbEvent>) => rfbEvent.body)
+      );
     }
+    return of(new RfbEvent());
+  }
 }
 
 export const rfbEventRoute: Routes = [
-    {
-        path: 'rfb-event',
-        component: RfbEventComponent,
-        resolve: {
-            'pagingParams': RfbEventResolvePagingParams
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'RfbEvents'
-        },
-        canActivate: [UserRouteAccessService]
-    }, {
-        path: 'rfb-event/:id',
-        component: RfbEventDetailComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'RfbEvents'
-        },
-        canActivate: [UserRouteAccessService]
-    }
+  {
+    path: '',
+    component: RfbEventComponent,
+    resolve: {
+      pagingParams: JhiResolvePagingParams
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      defaultSort: 'id,asc',
+      pageTitle: 'RfbEvents'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/view',
+    component: RfbEventDetailComponent,
+    resolve: {
+      rfbEvent: RfbEventResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'RfbEvents'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'new',
+    component: RfbEventUpdateComponent,
+    resolve: {
+      rfbEvent: RfbEventResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'RfbEvents'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/edit',
+    component: RfbEventUpdateComponent,
+    resolve: {
+      rfbEvent: RfbEventResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'RfbEvents'
+    },
+    canActivate: [UserRouteAccessService]
+  }
 ];
 
 export const rfbEventPopupRoute: Routes = [
-    {
-        path: 'rfb-event-new',
-        component: RfbEventPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'RfbEvents'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+  {
+    path: ':id/delete',
+    component: RfbEventDeletePopupComponent,
+    resolve: {
+      rfbEvent: RfbEventResolve
     },
-    {
-        path: 'rfb-event/:id/edit',
-        component: RfbEventPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'RfbEvents'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'RfbEvents'
     },
-    {
-        path: 'rfb-event/:id/delete',
-        component: RfbEventDeletePopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'RfbEvents'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  }
 ];

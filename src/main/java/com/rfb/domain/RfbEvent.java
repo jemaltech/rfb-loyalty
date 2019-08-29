@@ -1,22 +1,18 @@
 package com.rfb.domain;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * A RfbEvent.
  */
 @Entity
 @Table(name = "rfb_event")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class RfbEvent implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,14 +28,13 @@ public class RfbEvent implements Serializable {
     private String eventCode;
 
     @ManyToOne
+    @JsonIgnoreProperties("rfbEvents")
     private RfbLocation rfbLocation;
 
     @OneToMany(mappedBy = "rfbEvent")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<RfbEventAttendance> rfbEventAttendances = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -111,26 +106,22 @@ public class RfbEvent implements Serializable {
     public void setRfbEventAttendances(Set<RfbEventAttendance> rfbEventAttendances) {
         this.rfbEventAttendances = rfbEventAttendances;
     }
-    // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof RfbEvent)) {
             return false;
         }
-        RfbEvent rfbEvent = (RfbEvent) o;
-        if (rfbEvent.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), rfbEvent.getId());
+        return id != null && id.equals(((RfbEvent) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

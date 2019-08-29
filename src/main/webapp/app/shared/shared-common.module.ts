@@ -1,31 +1,10 @@
-import { NgModule, LOCALE_ID } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
-import {
-    RfbloyaltySharedLibsModule,
-    JhiAlertComponent,
-    JhiAlertErrorComponent
-} from './';
+import { RfbloyaltySharedLibsModule, JhiAlertComponent, JhiAlertErrorComponent } from './';
 
 @NgModule({
-    imports: [
-        RfbloyaltySharedLibsModule
-    ],
-    declarations: [
-        JhiAlertComponent,
-        JhiAlertErrorComponent
-    ],
-    providers: [
-        Title,
-        {
-            provide: LOCALE_ID,
-            useValue: 'en'
-        },
-    ],
-    exports: [
-        RfbloyaltySharedLibsModule,
-        JhiAlertComponent,
-        JhiAlertErrorComponent
-    ]
+  imports: [RfbloyaltySharedLibsModule],
+  declarations: [JhiAlertComponent, JhiAlertErrorComponent],
+  exports: [RfbloyaltySharedLibsModule, JhiAlertComponent, JhiAlertErrorComponent]
 })
 export class RfbloyaltySharedCommonModule {}

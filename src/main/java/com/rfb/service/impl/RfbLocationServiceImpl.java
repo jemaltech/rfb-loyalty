@@ -7,18 +7,20 @@ import com.rfb.service.dto.RfbLocationDTO;
 import com.rfb.service.mapper.RfbLocationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
- * Service Implementation for managing RfbLocation.
+ * Service Implementation for managing {@link RfbLocation}.
  */
 @Service
 @Transactional
-public class RfbLocationServiceImpl implements RfbLocationService{
+public class RfbLocationServiceImpl implements RfbLocationService {
 
     private final Logger log = LoggerFactory.getLogger(RfbLocationServiceImpl.class);
 
@@ -34,8 +36,8 @@ public class RfbLocationServiceImpl implements RfbLocationService{
     /**
      * Save a rfbLocation.
      *
-     * @param rfbLocationDTO the entity to save
-     * @return the persisted entity
+     * @param rfbLocationDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public RfbLocationDTO save(RfbLocationDTO rfbLocationDTO) {
@@ -46,10 +48,10 @@ public class RfbLocationServiceImpl implements RfbLocationService{
     }
 
     /**
-     *  Get all the rfbLocations.
+     * Get all the rfbLocations.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -59,28 +61,29 @@ public class RfbLocationServiceImpl implements RfbLocationService{
             .map(rfbLocationMapper::toDto);
     }
 
+
     /**
-     *  Get one rfbLocation by id.
+     * Get one rfbLocation by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
-    public RfbLocationDTO findOne(Long id) {
+    public Optional<RfbLocationDTO> findOne(Long id) {
         log.debug("Request to get RfbLocation : {}", id);
-        RfbLocation rfbLocation = rfbLocationRepository.findOne(id);
-        return rfbLocationMapper.toDto(rfbLocation);
+        return rfbLocationRepository.findById(id)
+            .map(rfbLocationMapper::toDto);
     }
 
     /**
-     *  Delete the  rfbLocation by id.
+     * Delete the rfbLocation by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete RfbLocation : {}", id);
-        rfbLocationRepository.delete(id);
+        rfbLocationRepository.deleteById(id);
     }
 }

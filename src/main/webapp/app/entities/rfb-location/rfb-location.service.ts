@@ -1,55 +1,38 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
-import { SERVER_API_URL } from '../../app.constants';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import { RfbLocation } from './rfb-location.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IRfbLocation } from 'app/shared/model/rfb-location.model';
 
-@Injectable()
+type EntityResponseType = HttpResponse<IRfbLocation>;
+type EntityArrayResponseType = HttpResponse<IRfbLocation[]>;
+
+@Injectable({ providedIn: 'root' })
 export class RfbLocationService {
+  public resourceUrl = SERVER_API_URL + 'api/rfb-locations';
 
-    private resourceUrl = SERVER_API_URL + 'api/rfb-locations';
+  constructor(protected http: HttpClient) {}
 
-    constructor(private http: Http) { }
+  create(rfbLocation: IRfbLocation): Observable<EntityResponseType> {
+    return this.http.post<IRfbLocation>(this.resourceUrl, rfbLocation, { observe: 'response' });
+  }
 
-    create(rfbLocation: RfbLocation): Observable<RfbLocation> {
-        const copy = this.convert(rfbLocation);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
-        });
-    }
+  update(rfbLocation: IRfbLocation): Observable<EntityResponseType> {
+    return this.http.put<IRfbLocation>(this.resourceUrl, rfbLocation, { observe: 'response' });
+  }
 
-    update(rfbLocation: RfbLocation): Observable<RfbLocation> {
-        const copy = this.convert(rfbLocation);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
-        });
-    }
+  find(id: number): Observable<EntityResponseType> {
+    return this.http.get<IRfbLocation>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 
-    find(id: number): Observable<RfbLocation> {
-        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            return res.json();
-        });
-    }
+  query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IRfbLocation[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
 
-    query(req?: any): Observable<ResponseWrapper> {
-        const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
-            .map((res: Response) => this.convertResponse(res));
-    }
-
-    delete(id: number): Observable<Response> {
-        return this.http.delete(`${this.resourceUrl}/${id}`);
-    }
-
-    private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        return new ResponseWrapper(res.headers, jsonResponse, res.status);
-    }
-
-    private convert(rfbLocation: RfbLocation): RfbLocation {
-        const copy: RfbLocation = Object.assign({}, rfbLocation);
-        return copy;
-    }
+  delete(id: number): Observable<HttpResponse<any>> {
+    return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 }

@@ -1,18 +1,19 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span>Rfb Users</span>
-        <button class="btn btn-primary float-right jh-create-entity create-rfb-user" [routerLink]="['/', { outlets: { popup: ['rfb-user-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-rfb-user" [routerLink]="['/rfb-user/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span >
-            Create new Rfb User
+            Create a new Rfb User
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
     <br/>
-    <div class="table-responsive" *ngIf="rfbUsers">
+    <div class="alert alert-warning" *ngIf="rfbUsers?.length === 0">
+        <span>No rfbUsers found</span>
+    </div>
+    <div class="table-responsive" *ngIf="rfbUsers?.length > 0">
         <table class="table table-striped">
             <thead>
             <tr>
@@ -24,33 +25,33 @@
             </thead>
             <tbody>
             <tr *ngFor="let rfbUser of rfbUsers ;trackBy: trackId">
-                <td><a [routerLink]="['../rfb-user', rfbUser.id ]">{{rfbUser.id}}</a></td>
+                <td><a [routerLink]="['/rfb-user', rfbUser.id, 'view' ]">{{rfbUser.id}}</a></td>
                 <td>{{rfbUser.username}}</td>
                 <td>
                     <div *ngIf="rfbUser.homeLocationId">
-                        <a [routerLink]="['../rfb-location', rfbUser.homeLocationId  ]" >{{rfbUser.homeLocationId}}</a>
+                        <a [routerLink]="['/rfb-location', rfbUser.homeLocationId , 'view' ]" >{{rfbUser.homeLocationId}}</a>
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['../rfb-user', rfbUser.id ]"
+                                [routerLink]="['/rfb-user', rfbUser.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'rfb-user/'+ rfbUser.id + '/edit'} }]"
-                                replaceUrl="true"
+                                [routerLink]="['/rfb-user', rfbUser.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'rfb-user/'+ rfbUser.id + '/delete'} }]"
+                                [routerLink]="['/rfb-user', { outlets: { popup: rfbUser.id + '/delete'} }]"
                                 replaceUrl="true"
+                                queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>

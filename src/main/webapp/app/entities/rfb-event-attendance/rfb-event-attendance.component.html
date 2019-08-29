@@ -1,62 +1,63 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span>Rfb Event Attendances</span>
-        <button class="btn btn-primary float-right jh-create-entity create-rfb-event-attendance" [routerLink]="['/', { outlets: { popup: ['rfb-event-attendance-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-rfb-event-attendance" [routerLink]="['/rfb-event-attendance/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span >
-            Create new Rfb Event Attendance
+            Create a new Rfb Event Attendance
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
     <br/>
-    <div class="table-responsive" *ngIf="rfbEventAttendances">
+    <div class="alert alert-warning" *ngIf="rfbEventAttendances?.length === 0">
+        <span>No rfbEventAttendances found</span>
+    </div>
+    <div class="table-responsive" *ngIf="rfbEventAttendances?.length > 0">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="attendanceDate"><span>Attendance Date</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="rfbEventId"><span>Rfb Event</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="rfbUserId"><span>Rfb User</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="attendanceDate"><span>Attendance Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="rfbEventId"><span>Rfb Event</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="rfbUserId"><span>Rfb User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let rfbEventAttendance of rfbEventAttendances ;trackBy: trackId">
-                <td><a [routerLink]="['../rfb-event-attendance', rfbEventAttendance.id ]">{{rfbEventAttendance.id}}</a></td>
+                <td><a [routerLink]="['/rfb-event-attendance', rfbEventAttendance.id, 'view' ]">{{rfbEventAttendance.id}}</a></td>
                 <td>{{rfbEventAttendance.attendanceDate | date:'mediumDate'}}</td>
                 <td>
                     <div *ngIf="rfbEventAttendance.rfbEventId">
-                        <a [routerLink]="['../rfb-event', rfbEventAttendance.rfbEventId  ]" >{{rfbEventAttendance.rfbEventId}}</a>
+                        <a [routerLink]="['/rfb-event', rfbEventAttendance.rfbEventId , 'view' ]" >{{rfbEventAttendance.rfbEventId}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="rfbEventAttendance.rfbUserId">
-                        <a [routerLink]="['../rfb-user', rfbEventAttendance.rfbUserId  ]" >{{rfbEventAttendance.rfbUserId}}</a>
+                        <a [routerLink]="['/rfb-user', rfbEventAttendance.rfbUserId , 'view' ]" >{{rfbEventAttendance.rfbUserId}}</a>
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['../rfb-event-attendance', rfbEventAttendance.id ]"
+                                [routerLink]="['/rfb-event-attendance', rfbEventAttendance.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'rfb-event-attendance/'+ rfbEventAttendance.id + '/edit'} }]"
-                                replaceUrl="true"
+                                [routerLink]="['/rfb-event-attendance', rfbEventAttendance.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'rfb-event-attendance/'+ rfbEventAttendance.id + '/delete'} }]"
+                                [routerLink]="['/rfb-event-attendance', { outlets: { popup: rfbEventAttendance.id + '/delete'} }]"
                                 replaceUrl="true"
+                                queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>

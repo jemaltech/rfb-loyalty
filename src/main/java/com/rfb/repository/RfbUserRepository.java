@@ -1,13 +1,12 @@
 package com.rfb.repository;
 
 import com.rfb.domain.RfbUser;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the RfbUser entity.
+ * Spring Data  repository for the RfbUser entity.
  */
 @SuppressWarnings("unused")
 @Repository

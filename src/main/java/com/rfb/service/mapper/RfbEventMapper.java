@@ -6,17 +6,19 @@ import com.rfb.service.dto.RfbEventDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity RfbEvent and its DTO RfbEventDTO.
+ * Mapper for the entity {@link RfbEvent} and its DTO {@link RfbEventDTO}.
  */
-@Mapper(componentModel = "spring", uses = {RfbLocationMapper.class, })
-public interface RfbEventMapper extends EntityMapper <RfbEventDTO, RfbEvent> {
+@Mapper(componentModel = "spring", uses = {RfbLocationMapper.class})
+public interface RfbEventMapper extends EntityMapper<RfbEventDTO, RfbEvent> {
 
     @Mapping(source = "rfbLocation.id", target = "rfbLocationId")
-    RfbEventDTO toDto(RfbEvent rfbEvent); 
+    RfbEventDTO toDto(RfbEvent rfbEvent);
 
     @Mapping(source = "rfbLocationId", target = "rfbLocation")
     @Mapping(target = "rfbEventAttendances", ignore = true)
-    RfbEvent toEntity(RfbEventDTO rfbEventDTO); 
+    @Mapping(target = "removeRfbEventAttendance", ignore = true)
+    RfbEvent toEntity(RfbEventDTO rfbEventDTO);
+
     default RfbEvent fromId(Long id) {
         if (id == null) {
             return null;

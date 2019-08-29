@@ -1,19 +1,16 @@
 package com.rfb.service.dto;
-
-
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
- * A DTO for the RfbUser entity.
+ * A DTO for the {@link com.rfb.domain.RfbUser} entity.
  */
 public class RfbUserDTO implements Serializable {
 
     private Long id;
 
     private String username;
+
 
     private Long homeLocationId;
 
@@ -51,7 +48,7 @@ public class RfbUserDTO implements Serializable {
         }
 
         RfbUserDTO rfbUserDTO = (RfbUserDTO) o;
-        if(rfbUserDTO.getId() == null || getId() == null) {
+        if (rfbUserDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), rfbUserDTO.getId());
@@ -67,6 +64,7 @@ public class RfbUserDTO implements Serializable {
         return "RfbUserDTO{" +
             "id=" + getId() +
             ", username='" + getUsername() + "'" +
+            ", homeLocation=" + getHomeLocationId() +
             "}";
     }
 }

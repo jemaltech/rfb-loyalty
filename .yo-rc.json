@@ -1,33 +1,41 @@
 {
   "generator-jhipster": {
     "promptValues": {
-      "packageName": "com.rfb"
+      "packageName": "automation"
     },
-    "jhipsterVersion": "4.8.2",
+    "jhipsterVersion": "6.2.0",
     "baseName": "rfbloyalty",
-    "packageName": "com.rfb",
-    "packageFolder": "com/rfb",
+    "packageName": "automation",
+    "packageFolder": "automation",
     "serverPort": "8080",
-    "authenticationType": "session",
+    "authenticationType": "jwt",
     "hibernateCache": "ehcache",
     "clusteredHttpSession": false,
     "websocket": false,
     "databaseType": "sql",
-    "devDatabaseType": "h2Memory",
-    "prodDatabaseType": "mysql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "postgresql",
     "searchEngine": false,
     "messageBroker": false,
     "serviceDiscoveryType": false,
-    "buildTool": "gradle",
+    "buildTool": "maven",
     "enableSocialSignIn": true,
     "enableSwaggerCodegen": false,
     "rememberMeKey": "6502974dc68c39295f86f41c6a971220553ea298",
     "clientFramework": "angularX",
-    "useSass": false,
+    "useSass": true,
     "clientPackageManager": "yarn",
     "applicationType": "monolith",
     "testFrameworks": [],
     "jhiPrefix": "jhi",
-    "enableTranslation": false
+    "enableTranslation": false,
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "jwtSecretKey": "ZjY5ODJjYmQ2Yjk3ZmMzOTcxOGIyZmZhOTU1M2RlMTg3NGM5MjM2MzY4NmI0OTBjNjRlMTFhMzE1MjBlOWVmOTQ3ZWNlODZiN2M5NzBjNTBkYWY2NTExOTNiOGViZmM3ZDAzMGEzMmRhZGNmZTgzOGVmNjBkNmY3NGMwYmUyNTg=",
+    "clientTheme": "none",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "blueprints": []
   }
 }

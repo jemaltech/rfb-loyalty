@@ -1,21 +1,16 @@
 package com.rfb.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * A RfbUser.
  */
 @Entity
 @Table(name = "rfb_user")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class RfbUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,11 +27,9 @@ public class RfbUser implements Serializable {
     private RfbLocation homeLocation;
 
     @OneToMany(mappedBy = "rfbUser")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<RfbEventAttendance> rfbEventAttendances = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -95,26 +88,22 @@ public class RfbUser implements Serializable {
     public void setRfbEventAttendances(Set<RfbEventAttendance> rfbEventAttendances) {
         this.rfbEventAttendances = rfbEventAttendances;
     }
-    // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof RfbUser)) {
             return false;
         }
-        RfbUser rfbUser = (RfbUser) o;
-        if (rfbUser.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), rfbUser.getId());
+        return id != null && id.equals(((RfbUser) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

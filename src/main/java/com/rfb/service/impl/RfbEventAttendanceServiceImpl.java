@@ -7,18 +7,20 @@ import com.rfb.service.dto.RfbEventAttendanceDTO;
 import com.rfb.service.mapper.RfbEventAttendanceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
- * Service Implementation for managing RfbEventAttendance.
+ * Service Implementation for managing {@link RfbEventAttendance}.
  */
 @Service
 @Transactional
-public class RfbEventAttendanceServiceImpl implements RfbEventAttendanceService{
+public class RfbEventAttendanceServiceImpl implements RfbEventAttendanceService {
 
     private final Logger log = LoggerFactory.getLogger(RfbEventAttendanceServiceImpl.class);
 
@@ -34,8 +36,8 @@ public class RfbEventAttendanceServiceImpl implements RfbEventAttendanceService{
     /**
      * Save a rfbEventAttendance.
      *
-     * @param rfbEventAttendanceDTO the entity to save
-     * @return the persisted entity
+     * @param rfbEventAttendanceDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public RfbEventAttendanceDTO save(RfbEventAttendanceDTO rfbEventAttendanceDTO) {
@@ -46,10 +48,10 @@ public class RfbEventAttendanceServiceImpl implements RfbEventAttendanceService{
     }
 
     /**
-     *  Get all the rfbEventAttendances.
+     * Get all the rfbEventAttendances.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -59,28 +61,29 @@ public class RfbEventAttendanceServiceImpl implements RfbEventAttendanceService{
             .map(rfbEventAttendanceMapper::toDto);
     }
 
+
     /**
-     *  Get one rfbEventAttendance by id.
+     * Get one rfbEventAttendance by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
-    public RfbEventAttendanceDTO findOne(Long id) {
+    public Optional<RfbEventAttendanceDTO> findOne(Long id) {
         log.debug("Request to get RfbEventAttendance : {}", id);
-        RfbEventAttendance rfbEventAttendance = rfbEventAttendanceRepository.findOne(id);
-        return rfbEventAttendanceMapper.toDto(rfbEventAttendance);
+        return rfbEventAttendanceRepository.findById(id)
+            .map(rfbEventAttendanceMapper::toDto);
     }
 
     /**
-     *  Delete the  rfbEventAttendance by id.
+     * Delete the rfbEventAttendance by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete RfbEventAttendance : {}", id);
-        rfbEventAttendanceRepository.delete(id);
+        rfbEventAttendanceRepository.deleteById(id);
     }
 }

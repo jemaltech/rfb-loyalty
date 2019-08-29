@@ -1,53 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager } from 'ng-jhipster';
 
-import { RfbLocation } from './rfb-location.model';
-import { RfbLocationService } from './rfb-location.service';
+import { IRfbLocation } from 'app/shared/model/rfb-location.model';
 
 @Component({
-    selector: 'jhi-rfb-location-detail',
-    templateUrl: './rfb-location-detail.component.html'
+  selector: 'jhi-rfb-location-detail',
+  templateUrl: './rfb-location-detail.component.html'
 })
-export class RfbLocationDetailComponent implements OnInit, OnDestroy {
+export class RfbLocationDetailComponent implements OnInit {
+  rfbLocation: IRfbLocation;
 
-    rfbLocation: RfbLocation;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
+  constructor(protected activatedRoute: ActivatedRoute) {}
 
-    constructor(
-        private eventManager: JhiEventManager,
-        private rfbLocationService: RfbLocationService,
-        private route: ActivatedRoute
-    ) {
-    }
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ rfbLocation }) => {
+      this.rfbLocation = rfbLocation;
+    });
+  }
 
-    ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
-        });
-        this.registerChangeInRfbLocations();
-    }
-
-    load(id) {
-        this.rfbLocationService.find(id).subscribe((rfbLocation) => {
-            this.rfbLocation = rfbLocation;
-        });
-    }
-    previousState() {
-        window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInRfbLocations() {
-        this.eventSubscriber = this.eventManager.subscribe(
-            'rfbLocationListModification',
-            (response) => this.load(this.rfbLocation.id)
-        );
-    }
+  previousState() {
+    window.history.back();
+  }
 }

@@ -7,19 +7,21 @@ import com.rfb.service.dto.RfbUserDTO;
 import com.rfb.service.mapper.RfbUserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Service Implementation for managing RfbUser.
+ * Service Implementation for managing {@link RfbUser}.
  */
 @Service
 @Transactional
-public class RfbUserServiceImpl implements RfbUserService{
+public class RfbUserServiceImpl implements RfbUserService {
 
     private final Logger log = LoggerFactory.getLogger(RfbUserServiceImpl.class);
 
@@ -35,8 +37,8 @@ public class RfbUserServiceImpl implements RfbUserService{
     /**
      * Save a rfbUser.
      *
-     * @param rfbUserDTO the entity to save
-     * @return the persisted entity
+     * @param rfbUserDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public RfbUserDTO save(RfbUserDTO rfbUserDTO) {
@@ -47,9 +49,9 @@ public class RfbUserServiceImpl implements RfbUserService{
     }
 
     /**
-     *  Get all the rfbUsers.
+     * Get all the rfbUsers.
      *
-     *  @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -60,28 +62,29 @@ public class RfbUserServiceImpl implements RfbUserService{
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+
     /**
-     *  Get one rfbUser by id.
+     * Get one rfbUser by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
-    public RfbUserDTO findOne(Long id) {
+    public Optional<RfbUserDTO> findOne(Long id) {
         log.debug("Request to get RfbUser : {}", id);
-        RfbUser rfbUser = rfbUserRepository.findOne(id);
-        return rfbUserMapper.toDto(rfbUser);
+        return rfbUserRepository.findById(id)
+            .map(rfbUserMapper::toDto);
     }
 
     /**
-     *  Delete the  rfbUser by id.
+     * Delete the rfbUser by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete RfbUser : {}", id);
-        rfbUserRepository.delete(id);
+        rfbUserRepository.deleteById(id);
     }
 }

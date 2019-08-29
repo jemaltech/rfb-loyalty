@@ -1,13 +1,12 @@
 package com.rfb.repository;
 
 import com.rfb.domain.RfbEvent;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the RfbEvent entity.
+ * Spring Data  repository for the RfbEvent entity.
  */
 @SuppressWarnings("unused")
 @Repository

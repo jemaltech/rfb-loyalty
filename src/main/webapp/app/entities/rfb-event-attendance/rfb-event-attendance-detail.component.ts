@@ -1,53 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager } from 'ng-jhipster';
 
-import { RfbEventAttendance } from './rfb-event-attendance.model';
-import { RfbEventAttendanceService } from './rfb-event-attendance.service';
+import { IRfbEventAttendance } from 'app/shared/model/rfb-event-attendance.model';
 
 @Component({
-    selector: 'jhi-rfb-event-attendance-detail',
-    templateUrl: './rfb-event-attendance-detail.component.html'
+  selector: 'jhi-rfb-event-attendance-detail',
+  templateUrl: './rfb-event-attendance-detail.component.html'
 })
-export class RfbEventAttendanceDetailComponent implements OnInit, OnDestroy {
+export class RfbEventAttendanceDetailComponent implements OnInit {
+  rfbEventAttendance: IRfbEventAttendance;
 
-    rfbEventAttendance: RfbEventAttendance;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
+  constructor(protected activatedRoute: ActivatedRoute) {}
 
-    constructor(
-        private eventManager: JhiEventManager,
-        private rfbEventAttendanceService: RfbEventAttendanceService,
-        private route: ActivatedRoute
-    ) {
-    }
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ rfbEventAttendance }) => {
+      this.rfbEventAttendance = rfbEventAttendance;
+    });
+  }
 
-    ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
-        });
-        this.registerChangeInRfbEventAttendances();
-    }
-
-    load(id) {
-        this.rfbEventAttendanceService.find(id).subscribe((rfbEventAttendance) => {
-            this.rfbEventAttendance = rfbEventAttendance;
-        });
-    }
-    previousState() {
-        window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInRfbEventAttendances() {
-        this.eventSubscriber = this.eventManager.subscribe(
-            'rfbEventAttendanceListModification',
-            (response) => this.load(this.rfbEventAttendance.id)
-        );
-    }
+  previousState() {
+    window.history.back();
+  }
 }

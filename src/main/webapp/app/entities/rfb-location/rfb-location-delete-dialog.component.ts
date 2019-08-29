@@ -1,64 +1,69 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { RfbLocation } from './rfb-location.model';
-import { RfbLocationPopupService } from './rfb-location-popup.service';
+import { IRfbLocation } from 'app/shared/model/rfb-location.model';
 import { RfbLocationService } from './rfb-location.service';
 
 @Component({
-    selector: 'jhi-rfb-location-delete-dialog',
-    templateUrl: './rfb-location-delete-dialog.component.html'
+  selector: 'jhi-rfb-location-delete-dialog',
+  templateUrl: './rfb-location-delete-dialog.component.html'
 })
 export class RfbLocationDeleteDialogComponent {
+  rfbLocation: IRfbLocation;
 
-    rfbLocation: RfbLocation;
+  constructor(
+    protected rfbLocationService: RfbLocationService,
+    public activeModal: NgbActiveModal,
+    protected eventManager: JhiEventManager
+  ) {}
 
-    constructor(
-        private rfbLocationService: RfbLocationService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  clear() {
+    this.activeModal.dismiss('cancel');
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    confirmDelete(id: number) {
-        this.rfbLocationService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'rfbLocationListModification',
-                content: 'Deleted an rfbLocation'
-            });
-            this.activeModal.dismiss(true);
-        });
-    }
+  confirmDelete(id: number) {
+    this.rfbLocationService.delete(id).subscribe(response => {
+      this.eventManager.broadcast({
+        name: 'rfbLocationListModification',
+        content: 'Deleted an rfbLocation'
+      });
+      this.activeModal.dismiss(true);
+    });
+  }
 }
 
 @Component({
-    selector: 'jhi-rfb-location-delete-popup',
-    template: ''
+  selector: 'jhi-rfb-location-delete-popup',
+  template: ''
 })
 export class RfbLocationDeletePopupComponent implements OnInit, OnDestroy {
+  protected ngbModalRef: NgbModalRef;
 
-    routeSub: any;
+  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
-    constructor(
-        private route: ActivatedRoute,
-        private rfbLocationPopupService: RfbLocationPopupService
-    ) {}
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ rfbLocation }) => {
+      setTimeout(() => {
+        this.ngbModalRef = this.modalService.open(RfbLocationDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+        this.ngbModalRef.componentInstance.rfbLocation = rfbLocation;
+        this.ngbModalRef.result.then(
+          result => {
+            this.router.navigate(['/rfb-location', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          },
+          reason => {
+            this.router.navigate(['/rfb-location', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          }
+        );
+      }, 0);
+    });
+  }
 
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.rfbLocationPopupService
-                .open(RfbLocationDeleteDialogComponent as Component, params['id']);
-        });
-    }
-
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.ngbModalRef = null;
+  }
 }

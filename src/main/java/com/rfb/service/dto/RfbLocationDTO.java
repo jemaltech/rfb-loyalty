@@ -1,13 +1,9 @@
 package com.rfb.service.dto;
-
-
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
- * A DTO for the RfbLocation entity.
+ * A DTO for the {@link com.rfb.domain.RfbLocation} entity.
  */
 public class RfbLocationDTO implements Serializable {
 
@@ -16,6 +12,7 @@ public class RfbLocationDTO implements Serializable {
     private String locationName;
 
     private Integer runDayOfWeek;
+
 
     public Long getId() {
         return id;
@@ -51,7 +48,7 @@ public class RfbLocationDTO implements Serializable {
         }
 
         RfbLocationDTO rfbLocationDTO = (RfbLocationDTO) o;
-        if(rfbLocationDTO.getId() == null || getId() == null) {
+        if (rfbLocationDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), rfbLocationDTO.getId());
@@ -67,7 +64,7 @@ public class RfbLocationDTO implements Serializable {
         return "RfbLocationDTO{" +
             "id=" + getId() +
             ", locationName='" + getLocationName() + "'" +
-            ", runDayOfWeek='" + getRunDayOfWeek() + "'" +
+            ", runDayOfWeek=" + getRunDayOfWeek() +
             "}";
     }
 }

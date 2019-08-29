@@ -1,20 +1,17 @@
 package com.rfb.service.dto;
-
-
 import java.time.LocalDate;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
- * A DTO for the RfbEventAttendance entity.
+ * A DTO for the {@link com.rfb.domain.RfbEventAttendance} entity.
  */
 public class RfbEventAttendanceDTO implements Serializable {
 
     private Long id;
 
     private LocalDate attendanceDate;
+
 
     private Long rfbEventId;
 
@@ -62,7 +59,7 @@ public class RfbEventAttendanceDTO implements Serializable {
         }
 
         RfbEventAttendanceDTO rfbEventAttendanceDTO = (RfbEventAttendanceDTO) o;
-        if(rfbEventAttendanceDTO.getId() == null || getId() == null) {
+        if (rfbEventAttendanceDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), rfbEventAttendanceDTO.getId());
@@ -78,6 +75,8 @@ public class RfbEventAttendanceDTO implements Serializable {
         return "RfbEventAttendanceDTO{" +
             "id=" + getId() +
             ", attendanceDate='" + getAttendanceDate() + "'" +
+            ", rfbEvent=" + getRfbEventId() +
+            ", rfbUser=" + getRfbUserId() +
             "}";
     }
 }

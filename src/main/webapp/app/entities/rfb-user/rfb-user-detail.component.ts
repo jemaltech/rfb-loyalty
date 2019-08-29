@@ -1,53 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager } from 'ng-jhipster';
 
-import { RfbUser } from './rfb-user.model';
-import { RfbUserService } from './rfb-user.service';
+import { IRfbUser } from 'app/shared/model/rfb-user.model';
 
 @Component({
-    selector: 'jhi-rfb-user-detail',
-    templateUrl: './rfb-user-detail.component.html'
+  selector: 'jhi-rfb-user-detail',
+  templateUrl: './rfb-user-detail.component.html'
 })
-export class RfbUserDetailComponent implements OnInit, OnDestroy {
+export class RfbUserDetailComponent implements OnInit {
+  rfbUser: IRfbUser;
 
-    rfbUser: RfbUser;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
+  constructor(protected activatedRoute: ActivatedRoute) {}
 
-    constructor(
-        private eventManager: JhiEventManager,
-        private rfbUserService: RfbUserService,
-        private route: ActivatedRoute
-    ) {
-    }
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ rfbUser }) => {
+      this.rfbUser = rfbUser;
+    });
+  }
 
-    ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
-        });
-        this.registerChangeInRfbUsers();
-    }
-
-    load(id) {
-        this.rfbUserService.find(id).subscribe((rfbUser) => {
-            this.rfbUser = rfbUser;
-        });
-    }
-    previousState() {
-        window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInRfbUsers() {
-        this.eventSubscriber = this.eventManager.subscribe(
-            'rfbUserListModification',
-            (response) => this.load(this.rfbUser.id)
-        );
-    }
+  previousState() {
+    window.history.back();
+  }
 }

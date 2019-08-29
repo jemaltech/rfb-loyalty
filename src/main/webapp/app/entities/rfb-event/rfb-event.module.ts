@@ -1,51 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { RfbloyaltySharedModule } from '../../shared';
+import { RfbloyaltySharedModule } from 'app/shared';
 import {
-    RfbEventService,
-    RfbEventPopupService,
-    RfbEventComponent,
-    RfbEventDetailComponent,
-    RfbEventDialogComponent,
-    RfbEventPopupComponent,
-    RfbEventDeletePopupComponent,
-    RfbEventDeleteDialogComponent,
-    rfbEventRoute,
-    rfbEventPopupRoute,
-    RfbEventResolvePagingParams,
+  RfbEventComponent,
+  RfbEventDetailComponent,
+  RfbEventUpdateComponent,
+  RfbEventDeletePopupComponent,
+  RfbEventDeleteDialogComponent,
+  rfbEventRoute,
+  rfbEventPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...rfbEventRoute,
-    ...rfbEventPopupRoute,
-];
+const ENTITY_STATES = [...rfbEventRoute, ...rfbEventPopupRoute];
 
 @NgModule({
-    imports: [
-        RfbloyaltySharedModule,
-        RouterModule.forRoot(ENTITY_STATES, { useHash: true })
-    ],
-    declarations: [
-        RfbEventComponent,
-        RfbEventDetailComponent,
-        RfbEventDialogComponent,
-        RfbEventDeleteDialogComponent,
-        RfbEventPopupComponent,
-        RfbEventDeletePopupComponent,
-    ],
-    entryComponents: [
-        RfbEventComponent,
-        RfbEventDialogComponent,
-        RfbEventPopupComponent,
-        RfbEventDeleteDialogComponent,
-        RfbEventDeletePopupComponent,
-    ],
-    providers: [
-        RfbEventService,
-        RfbEventPopupService,
-        RfbEventResolvePagingParams,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [RfbloyaltySharedModule, RouterModule.forChild(ENTITY_STATES)],
+  declarations: [
+    RfbEventComponent,
+    RfbEventDetailComponent,
+    RfbEventUpdateComponent,
+    RfbEventDeleteDialogComponent,
+    RfbEventDeletePopupComponent
+  ],
+  entryComponents: [RfbEventComponent, RfbEventUpdateComponent, RfbEventDeleteDialogComponent, RfbEventDeletePopupComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class RfbloyaltyRfbEventModule {}

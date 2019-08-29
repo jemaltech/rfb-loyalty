@@ -1,22 +1,31 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
-import { RfbloyaltyRfbLocationModule } from './rfb-location/rfb-location.module';
-import { RfbloyaltyRfbEventModule } from './rfb-event/rfb-event.module';
-import { RfbloyaltyRfbEventAttendanceModule } from './rfb-event-attendance/rfb-event-attendance.module';
-import { RfbloyaltyRfbUserModule } from './rfb-user/rfb-user.module';
-/* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-    imports: [
-        RfbloyaltyRfbLocationModule,
-        RfbloyaltyRfbEventModule,
-        RfbloyaltyRfbEventAttendanceModule,
-        RfbloyaltyRfbUserModule,
-        /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
-    ],
-    declarations: [],
-    entryComponents: [],
-    providers: [],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [
+    RouterModule.forChild([
+      {
+        path: 'rfb-location',
+        loadChildren: () => import('./rfb-location/rfb-location.module').then(m => m.RfbloyaltyRfbLocationModule)
+      },
+      {
+        path: 'rfb-event',
+        loadChildren: () => import('./rfb-event/rfb-event.module').then(m => m.RfbloyaltyRfbEventModule)
+      },
+      {
+        path: 'rfb-event-attendance',
+        loadChildren: () => import('./rfb-event-attendance/rfb-event-attendance.module').then(m => m.RfbloyaltyRfbEventAttendanceModule)
+      },
+      {
+        path: 'rfb-user',
+        loadChildren: () => import('./rfb-user/rfb-user.module').then(m => m.RfbloyaltyRfbUserModule)
+      }
+      /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
+    ])
+  ],
+  declarations: [],
+  entryComponents: [],
+  providers: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class RfbloyaltyEntityModule {}

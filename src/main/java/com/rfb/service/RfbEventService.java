@@ -1,42 +1,46 @@
 package com.rfb.service;
 
 import com.rfb.service.dto.RfbEventDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 /**
- * Service Interface for managing RfbEvent.
+ * Service Interface for managing {@link com.rfb.domain.RfbEvent}.
  */
 public interface RfbEventService {
 
     /**
      * Save a rfbEvent.
      *
-     * @param rfbEventDTO the entity to save
-     * @return the persisted entity
+     * @param rfbEventDTO the entity to save.
+     * @return the persisted entity.
      */
     RfbEventDTO save(RfbEventDTO rfbEventDTO);
 
     /**
-     *  Get all the rfbEvents.
+     * Get all the rfbEvents.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     Page<RfbEventDTO> findAll(Pageable pageable);
 
-    /**
-     *  Get the "id" rfbEvent.
-     *
-     *  @param id the id of the entity
-     *  @return the entity
-     */
-    RfbEventDTO findOne(Long id);
 
     /**
-     *  Delete the "id" rfbEvent.
+     * Get the "id" rfbEvent.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity.
+     * @return the entity.
+     */
+    Optional<RfbEventDTO> findOne(Long id);
+
+    /**
+     * Delete the "id" rfbEvent.
+     *
+     * @param id the id of the entity.
      */
     void delete(Long id);
 }

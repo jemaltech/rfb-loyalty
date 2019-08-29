@@ -7,18 +7,20 @@ import com.rfb.service.dto.RfbEventDTO;
 import com.rfb.service.mapper.RfbEventMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
- * Service Implementation for managing RfbEvent.
+ * Service Implementation for managing {@link RfbEvent}.
  */
 @Service
 @Transactional
-public class RfbEventServiceImpl implements RfbEventService{
+public class RfbEventServiceImpl implements RfbEventService {
 
     private final Logger log = LoggerFactory.getLogger(RfbEventServiceImpl.class);
 
@@ -34,8 +36,8 @@ public class RfbEventServiceImpl implements RfbEventService{
     /**
      * Save a rfbEvent.
      *
-     * @param rfbEventDTO the entity to save
-     * @return the persisted entity
+     * @param rfbEventDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public RfbEventDTO save(RfbEventDTO rfbEventDTO) {
@@ -46,10 +48,10 @@ public class RfbEventServiceImpl implements RfbEventService{
     }
 
     /**
-     *  Get all the rfbEvents.
+     * Get all the rfbEvents.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -59,28 +61,29 @@ public class RfbEventServiceImpl implements RfbEventService{
             .map(rfbEventMapper::toDto);
     }
 
+
     /**
-     *  Get one rfbEvent by id.
+     * Get one rfbEvent by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
-    public RfbEventDTO findOne(Long id) {
+    public Optional<RfbEventDTO> findOne(Long id) {
         log.debug("Request to get RfbEvent : {}", id);
-        RfbEvent rfbEvent = rfbEventRepository.findOne(id);
-        return rfbEventMapper.toDto(rfbEvent);
+        return rfbEventRepository.findById(id)
+            .map(rfbEventMapper::toDto);
     }
 
     /**
-     *  Delete the  rfbEvent by id.
+     * Delete the rfbEvent by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete RfbEvent : {}", id);
-        rfbEventRepository.delete(id);
+        rfbEventRepository.deleteById(id);
     }
 }
