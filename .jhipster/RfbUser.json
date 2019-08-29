@@ -1,0 +1,30 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "homeLocation",
+            "otherEntityName": "rfbLocation",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "rfbUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "rfbEventAttendance",
+            "otherEntityName": "rfbEventAttendance",
+            "otherEntityRelationshipName": "rfbUser"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "username",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20171014184116",
+    "entityTableName": "rfb_user",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl"
+}
